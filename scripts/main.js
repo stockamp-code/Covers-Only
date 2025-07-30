@@ -20,17 +20,17 @@ function fetch_data(sheet_csv) {
       let requestNumber = 1;
       if (siteData[entry.Name]){
        console.log("duplicate")
-       console.log(entry.Name) 
-
+       console.log(entry.Name)
+       requestNumber = siteData[entry.Name].requestNumber + 1;
+       console.log(requestNumber);
       }
-      else {
-        let entryObject = {
-          'name' : entry.Name,
-          'time' : entry.Timestamp,
-          'setup' : entry.Setup,
-          'instagram' : entry.Instagram,
-          'requestNumber' : 1
-        }
+
+      let entryObject = {
+        'name' : entry.Name+" ["+requestNumber+"]",
+        'time' : entry.Timestamp,
+        'setup' : entry.Setup,
+        'instagram' : entry.Instagram,
+        'requestNumber' : requestNumber
       }
       
       signupRequests[entry.Name] = entryObject
