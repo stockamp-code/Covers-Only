@@ -17,6 +17,10 @@ function fetch_data(sheet_csv) {
   };
 
   const renderData = function(gson) {
+    
+    pullFromLocalStorage()
+    console.log(siteData)
+
     let signupRequests = siteData.signupRequests;
     
     for (let i=0; i<gson.length; i++) {
@@ -36,14 +40,14 @@ function fetch_data(sheet_csv) {
         if (instagram === ""){
           instagram = signupRequests[systemName].instagram;
         };
-        requestEntries = signupRequests[systemName].requestEntries
+        requestEntries = signupRequests[systemName].requestEntries;
 
         requestNumber = Object.keys(requestEntries).length + 1;
 
         if (requestEntries[timestamp]){
           duplicateStatus = true;
-        }
-      }
+        };
+      };
 
       if (duplicateStatus){
         console.log("Duplicate Status: " + duplicateStatus)
@@ -55,7 +59,7 @@ function fetch_data(sheet_csv) {
           'timestamp' : timestamp,
           'requestNumber' : requestNumber,
           'alreadyPerformed' : false
-        }
+        };
 
         requestEntries[timestamp] = requestEntry;
 
@@ -64,23 +68,43 @@ function fetch_data(sheet_csv) {
           'instagram' : instagram,
           'requestEntries' : requestEntries,
           'totalRequestCount' : requestNumber,
-        }
+        };
         
         signupRequests[systemName] = personData;
-      }
-    }
+      };
+    };
 
     siteData.signupRequests = signupRequests;
-    console.log(siteData)
-  }
+    console.log(siteData);
+  };
 
-}
+};
 
 function sortOrderList(signupRequests, orderList, previousPerformersList) {
-  console.log("Howdy")
+  let newOrder = orderList;
+  let newPreviousPerformersList = previousPerformersList;
+};
+
+function writeToLocalStorage(data){
+  const newData = JSON.stringify(data);
+  localStorage.setItem("siteData", newData);
+};
+
+function pullFromLocalStorage(){
+  const oldData = localStorage.getItem("siteData");
+  siteData = JSON.parse(oldData);
+};
+
+function initializeLocalStorage(){
+  const blankData = {
+    'signupRequests' : {},
+    'orderList' : [],
+    'previousPerformersList' : []
+  };
+  writeToLocalStorage(blankData)
 }
 
+initializeLocalStorage()
 fetch_data(sheet_csv)
 sortOrderList(siteData.signupRequests, siteData.orderList, siteData.previousPerformersList)
-
 
