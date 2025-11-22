@@ -4,13 +4,11 @@ let siteData = {}
 function writeToLocalStorage(data){
   const newData = JSON.stringify(data);
   localStorage.setItem("siteData", newData);
-  // console.log("stored data")
 };
 
 function pullFromLocalStorage(){
   const oldData = localStorage.getItem("siteData");
   siteData = JSON.parse(oldData);
-  // console.log("pulled data")
 };
 
 function initializeLocalStorage(){
@@ -45,6 +43,7 @@ function fetch_data(signup_csv) {
       // console.log(entry)
 
       const timestamp = entry.Timestamp;
+      const numericalTimestamp= Date.parse(timestamp)
       const name = entry.Name;
       const systemName = name.toLowerCase();
       const setup = entry.Setup.split(", "); 
@@ -74,6 +73,7 @@ function fetch_data(signup_csv) {
           'setup' : setup,
           'instagram' : instagram,
           'timestamp' : timestamp,
+          'numericalTimestamp' : numericalTimestamp,
           'requestNumber' : requestNumber,
           'alreadyPerformed' : false
         };
@@ -92,24 +92,49 @@ function fetch_data(signup_csv) {
     };
 
     siteData.signupRequests = signupRequests;
+    sortOrderList()
     writeToLocalStorage(siteData);
     pullFromLocalStorage();
     console.log(siteData);
   };
 };
 
-function sortOrderList(signupRequests, orderList, previousPerformersList) {
-  let newOrder = orderList;
-  let newPreviousPerformersList = previousPerformersList;
-};
+function sortOrderList() {
+  let newList = [];
+  let newPreviousPerformersList = [];
+  Object.keys(siteData.signupRequests).forEach(personKey=>{
+    let person = siteData.signupRequests[personKey];
+    Object.keys(person.requestEntries).forEach(requestKey=>{
+      let request = person.requestEntries[requestKey];
+      request.systemName = person.systemName;
+      if (!request.alreadyPerformed){
+        newList.push(request)
+      } else {
+        newPreviousPerformersList.push(request)
+      }
+    })
+  })
 
+  newList.sort(
+    (a, b) => 
+      a.requestNumber - b.requestNumber || a.numericalTimestamp - b.numericalTimestamp
+  );
+  newPreviousPerformersList.sort(
+    (a, b) => 
+      a.requestNumber - b.requestNumber || a.numericalTimestamp - b.numericalTimestamp
+  );
+  // console.log(newList)
+  // console.log(newPreviousPerformersList)
+  siteData.orderList = newList;
+  siteData.previousPerformersList = newPreviousPerformersList;
+};
 
 if (!localStorage.siteData) {
   initializeLocalStorage();
 }
+
 fetch_data(signup_csv)
+
 setInterval(function(){
     fetch_data(signup_csv)
 }, 60000)
-sortOrderList(siteData.signupRequests, siteData.orderList, siteData.previousPerformersList)
-
