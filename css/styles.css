@@ -31,9 +31,10 @@ body {
 .list-rank {
     position: absolute;
     left: -1.8em;
-    top: 1.5em;
-    font-size: .8em;
-    color: gray
+    top: 1em;
+    font-size: 1.5em;
+    color: gray;
+    font-weight: 800;
 }
 
 .artist-name {
@@ -92,4 +93,4 @@ body {
 }
 .utilities > button:hover{
    background-color:  rgb(51, 68, 89);
-}
+} 
