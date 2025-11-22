@@ -1,10 +1,28 @@
+
+
 let sheet_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
-let siteData = {
-  'signupRequests' : {},
-  'orderList' : [],
-  'previousPerformersList' : []
+let siteData = {}
+
+
+function writeToLocalStorage(data){
+  const newData = JSON.stringify(data);
+  localStorage.setItem("siteData", newData);
 };
 
+function pullFromLocalStorage(){
+  const oldData = localStorage.getItem("siteData");
+  siteData = JSON.parse(oldData);
+};
+
+function initializeLocalStorage(){
+  const blankData = {
+    'signupRequests' : {},
+    'orderList' : [],
+    'previousPerformersList' : []
+  };
+  writeToLocalStorage(blankData)
+  pullFromLocalStorage();
+}
 
 function fetch_data(sheet_csv) {
   fetch(sheet_csv)
@@ -19,7 +37,6 @@ function fetch_data(sheet_csv) {
   const renderData = function(gson) {
     
     pullFromLocalStorage()
-    console.log(siteData)
 
     let signupRequests = siteData.signupRequests;
     
@@ -77,32 +94,12 @@ function fetch_data(sheet_csv) {
     siteData.signupRequests = signupRequests;
     console.log(siteData);
   };
-
 };
 
 function sortOrderList(signupRequests, orderList, previousPerformersList) {
   let newOrder = orderList;
   let newPreviousPerformersList = previousPerformersList;
 };
-
-function writeToLocalStorage(data){
-  const newData = JSON.stringify(data);
-  localStorage.setItem("siteData", newData);
-};
-
-function pullFromLocalStorage(){
-  const oldData = localStorage.getItem("siteData");
-  siteData = JSON.parse(oldData);
-};
-
-function initializeLocalStorage(){
-  const blankData = {
-    'signupRequests' : {},
-    'orderList' : [],
-    'previousPerformersList' : []
-  };
-  writeToLocalStorage(blankData)
-}
 
 initializeLocalStorage()
 fetch_data(sheet_csv)
