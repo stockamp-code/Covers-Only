@@ -1,0 +1,40 @@
+body {
+    color: rgb(40, 40, 40);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.request-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    margin: .5em;
+    padding: .5em;
+    background-color: rgb(181, 217, 248);
+    max-width: 25em;
+}
+
+.artist-name {
+    min-height: 1em;
+    font-weight: 600;
+}
+
+.instagram {
+    min-height: 1em;
+    color: rgb(82, 82, 82);
+    font-size: .8em;
+}
+
+.toggle-button {
+    background-color: rgb(100, 134, 179);
+    color: white;
+    border: none;
+}
+
+.utilities {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    margin: .5em;
+    padding: .5em;
+    background-color: rgb(194, 148, 190);
+}

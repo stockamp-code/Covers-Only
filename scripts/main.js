@@ -105,7 +105,7 @@ function fetch_data(signup_csv) {
     writeToLocalStorage(siteData);
     pullFromLocalStorage();
     renderSiteData();
-    console.log(siteData);
+    // console.log(siteData);
   };
 };
 
@@ -145,7 +145,7 @@ function toggleAlreadyPerformedStatus(personID, requestID){
   sortOrderList()
   writeToLocalStorage(siteData)
   pullFromLocalStorage()
-  console.log(siteData.signupRequests[personID].requestEntries[requestID])
+  // console.log(siteData.signupRequests[personID].requestEntries[requestID])
 }
 
 // ========================================================================================
@@ -171,19 +171,15 @@ function renderSiteData(){
     newRequestDiv.setAttribute("id", id);
     newRequestDiv.classList.add("request-wrapper");
     newRequestDiv.innerHTML = `
-    <div class="artist-name">
-    ${name} <span class="request-number">${requestNumber}</span>
-    </div>
-    <div class="instagram">
-    ${instagram}
-    </div>
+      <div>
+        <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+        <div class="instagram">${instagram}</div>
+      </div>
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
     button.innerHTML = "Switch";
     button.onclick = function() {
-      console.log(systemName)
-      console.log(id)
       toggleAlreadyPerformedStatus(systemName, id);
       renderSiteData()
     }
@@ -203,12 +199,10 @@ function renderSiteData(){
     newRequestDiv.setAttribute("id", id);
     newRequestDiv.classList.add("request-wrapper");
     newRequestDiv.innerHTML = `
-    <div class="artist-name">
-    ${name} <span class="request-number">${requestNumber}</span>
-    </div>
-    <div class="instagram">
-    ${instagram}
-    </div>
+      <div>
+        <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+        <div class="instagram">${instagram}</div>
+      </div>
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
