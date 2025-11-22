@@ -1,17 +1,16 @@
-
-
-let sheet_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
+let signup_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
 let siteData = {}
-
 
 function writeToLocalStorage(data){
   const newData = JSON.stringify(data);
   localStorage.setItem("siteData", newData);
+  // console.log("stored data")
 };
 
 function pullFromLocalStorage(){
   const oldData = localStorage.getItem("siteData");
   siteData = JSON.parse(oldData);
+  // console.log("pulled data")
 };
 
 function initializeLocalStorage(){
@@ -22,10 +21,11 @@ function initializeLocalStorage(){
   };
   writeToLocalStorage(blankData)
   pullFromLocalStorage();
+  console.log("initialized local storage")
 }
 
-function fetch_data(sheet_csv) {
-  fetch(sheet_csv)
+function fetch_data(signup_csv) {
+  fetch(signup_csv)
   .then(function(response){return response.text();})
   .then(function(data){parseData(data)});
 
@@ -92,6 +92,8 @@ function fetch_data(sheet_csv) {
     };
 
     siteData.signupRequests = signupRequests;
+    writeToLocalStorage(siteData);
+    pullFromLocalStorage();
     console.log(siteData);
   };
 };
@@ -101,7 +103,13 @@ function sortOrderList(signupRequests, orderList, previousPerformersList) {
   let newPreviousPerformersList = previousPerformersList;
 };
 
-initializeLocalStorage()
-fetch_data(sheet_csv)
+
+if (!localStorage.siteData) {
+  initializeLocalStorage();
+}
+fetch_data(signup_csv)
+setInterval(function(){
+    fetch_data(signup_csv)
+}, 60000)
 sortOrderList(siteData.signupRequests, siteData.orderList, siteData.previousPerformersList)
 
