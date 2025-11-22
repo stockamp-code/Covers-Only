@@ -155,6 +155,7 @@ function renderSiteData(){
   const previousPerformersList = siteData.previousPerformersList;
   const signUpDiv = document.getElementById(signUpDivID);
   const prevDiv = document.getElementById(previousPerformersDivID);
+  let requestPosition = 0;
 
   signUpDiv.innerHTML = "";
   prevDiv.innerHTML = "";
@@ -163,14 +164,16 @@ function renderSiteData(){
     const name = request.name;
     const systemName = name.toLowerCase()
     const id = request.numericalTimestamp;
-    const requestNumber = request.requestNumber;
+    const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
     const instagram = request.instagram;
+    requestPosition++;
 
     let newRequestDiv = document.createElement("div");
     
     newRequestDiv.setAttribute("id", id);
     newRequestDiv.classList.add("request-wrapper");
     newRequestDiv.innerHTML = `
+      <div class="list-rank">${requestPosition}</div>
       <div>
         <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
         <div class="instagram">${instagram}</div>
@@ -178,7 +181,7 @@ function renderSiteData(){
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
-    button.innerHTML = "Switch";
+    button.innerHTML = 'X';
     button.onclick = function() {
       toggleAlreadyPerformedStatus(systemName, id);
       renderSiteData()
@@ -187,11 +190,11 @@ function renderSiteData(){
     signUpDiv.appendChild(newRequestDiv)
   })
 
-    previousPerformersList.forEach(request =>{
+  previousPerformersList.forEach(request =>{
     const name = request.name;
     const systemName = name.toLowerCase();
     const id = request.numericalTimestamp;
-    const requestNumber = request.requestNumber;
+    const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
     const instagram = request.instagram;
 
     let newRequestDiv = document.createElement("div");
@@ -206,7 +209,7 @@ function renderSiteData(){
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
-    button.innerHTML = "Switch";
+    button.innerHTML = '⬆'
     button.onclick = function() {
       console.log(systemName)
       console.log(id)
