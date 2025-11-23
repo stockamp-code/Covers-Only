@@ -58,6 +58,7 @@ function fetch_data(signup_csv) {
       let requestEntries = {};
       let duplicateStatus = false;
       let requestNumber = 1;
+      let isMinor = (entry.Age === "Yes") ? true : false;
 
       if (signupRequests[systemName]){
         if (instagram === ""){
@@ -73,7 +74,7 @@ function fetch_data(signup_csv) {
       };
 
       if (duplicateStatus){
-        console.log("Duplicate Status: " + duplicateStatus)
+        // console.log("Duplicate Status: " + duplicateStatus)
       } else {
 
         let requestEntry = {
@@ -84,7 +85,8 @@ function fetch_data(signup_csv) {
           'timestamp' : timestamp,
           'numericalTimestamp' : numericalTimestamp,
           'requestNumber' : requestNumber,
-          'alreadyPerformed' : false
+          'alreadyPerformed' : false,
+          'isMinor' : isMinor,
         };
 
         requestEntries[numericalTimestamp] = requestEntry;
@@ -131,7 +133,7 @@ function sortOrderList() {
   );
   newPreviousPerformersList.sort(
     (a, b) => 
-      b.requestNumber - a.requestNumber || b.numericalTimestamp - a.numericalTimestamp
+      a.requestNumber - b.requestNumber || a.numericalTimestamp - b.numericalTimestamp
   );
   siteData.orderList = newList;
   siteData.previousPerformersList = newPreviousPerformersList;
@@ -166,12 +168,14 @@ function renderSiteData(){
     const id = request.numericalTimestamp;
     const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
     const instagram = request.instagram;
+    const isMinor = request.isMinor;
     requestPosition++;
 
     let newRequestDiv = document.createElement("div");
     
     newRequestDiv.setAttribute("id", id);
     newRequestDiv.classList.add("request-wrapper");
+    (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
     newRequestDiv.innerHTML = `
       <div class="list-rank">${requestPosition}</div>
       <div>
@@ -181,7 +185,7 @@ function renderSiteData(){
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
-    button.innerHTML = 'X';
+    button.innerHTML = '➜';
     button.onclick = function() {
       toggleAlreadyPerformedStatus(systemName, id);
       renderSiteData()
@@ -196,11 +200,14 @@ function renderSiteData(){
     const id = request.numericalTimestamp;
     const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
     const instagram = request.instagram;
+    const isMinor = request.isMinor;
 
     let newRequestDiv = document.createElement("div");
     
     newRequestDiv.setAttribute("id", id);
     newRequestDiv.classList.add("request-wrapper");
+    newRequestDiv.classList.add("alt");
+    (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
     newRequestDiv.innerHTML = `
       <div>
         <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
@@ -209,10 +216,9 @@ function renderSiteData(){
     `
     let button = document.createElement("button");
     button.classList.add("toggle-button");
-    button.innerHTML = '⬆'
+    button.classList.add("alt")
+    button.innerHTML = '↺'
     button.onclick = function() {
-      console.log(systemName)
-      console.log(id)
       toggleAlreadyPerformedStatus(systemName, id);
       renderSiteData()
     }

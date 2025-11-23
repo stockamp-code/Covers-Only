@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <title>Covers Only</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src = "https://kit.fontawesome.com/e0a0e3a5f4.js" crossorigin="anonymous"></script>
-    <script src = "https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+    <script src="https://kit.fontawesome.com/e0a0e3a5f4.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
     <script 
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
@@ -19,18 +19,18 @@
         <h1 class="banner-text">Covers Only</h1>
         <img class='banner-image'src="media/Banner-Title.png" alt="Bird on a Mic, the Covers Only Logo">
       </div>
-        <div class="utilities">
-        <button type="button" onClick="fetch_data(signup_csv)">↻</button>
-        <button type="button" onClick="initializeLocalStorage()">Clear Data</button>
-      </div>
     </div>
     <div>
-      <h2>Sign Up List</h2>
-      <div id="signup_list"></div>
-    </div>
-    <div>    
-      <h2>Previous Performers</h2>
+      <div class="sign-up-heading">
+        <h2>Sign Up List</h2>
+        <div class="utilities">
+          <button type="button" onClick="fetch_data(signup_csv)">↻</button>
+          <button type="button" onClick="initializeLocalStorage()">⌦</button>
+        </div>
+      </div>
+      <!-- <h2>Previous Performers</h2> -->
       <div id="previous_performers"></div>
+      <div id="signup_list"></div>
     </div>
     <script src="scripts/frontEnd.js"></script>
   </body>
