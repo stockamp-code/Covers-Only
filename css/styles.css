@@ -4,6 +4,7 @@ body {
     padding: 1.5em;
     font-size: clamp(1.25rem, 1.0648rem + 0.7407vw, 1.5rem);
     margin: 0px;
+    padding-bottom: 4em;
 }
 
 .heading {
