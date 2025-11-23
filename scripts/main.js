@@ -162,69 +162,105 @@ function renderSiteData(){
   signUpDiv.innerHTML = "";
   prevDiv.innerHTML = "";
 
-  orderList.forEach(request =>{
-    const name = request.name;
-    const systemName = name.toLowerCase()
-    const id = request.numericalTimestamp;
-    const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
-    const instagram = request.instagram;
-    const isMinor = request.isMinor;
-    requestPosition++;
+  function renderList(list, parentDiv, listType){
+    list.forEach(request =>{
+      const name = request.name;
+      const systemName = name.toLowerCase()
+      const id = request.numericalTimestamp;
+      const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
+      const instagram = request.instagram;
+      const isMinor = request.isMinor;
+      (listType === "on deck") ? requestPosition++ : requestPosition="";
 
-    let newRequestDiv = document.createElement("div");
+      let newRequestDiv = document.createElement("div");
+      newRequestDiv.setAttribute("id", id);
+      newRequestDiv.classList.add("request-wrapper");
+      (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT");
+      (listType !== "on deck") ? newRequestDiv.classList.add("alt") : console.log("on deck");
+      newRequestDiv.innerHTML = `
+        <div class="list-rank">${requestPosition}</div>
+        <div>
+          <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+          <div class="instagram">${instagram}</div>
+        </div>
+      `
+        let button = document.createElement("button");
+        button.classList.add("toggle-button");
+        button.innerHTML = (listType === "on deck") ? '➜': '↺';
+        button.onclick = function() {
+          toggleAlreadyPerformedStatus(systemName, id);
+          renderSiteData()
+        }
+        newRequestDiv.appendChild(button);
+        parentDiv.appendChild(newRequestDiv)
+    })
+  }
+
+  renderList(orderList, signUpDiv, "on deck")
+  renderList(previousPerformersList, prevDiv, "already performed")
+
+  // orderList.forEach(request =>{
+  //   const name = request.name;
+  //   const systemName = name.toLowerCase()
+  //   const id = request.numericalTimestamp;
+  //   const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
+  //   const instagram = request.instagram;
+  //   const isMinor = request.isMinor;
+  //   requestPosition++;
+
+  //   let newRequestDiv = document.createElement("div");
+  //   newRequestDiv.setAttribute("id", id);
+  //   newRequestDiv.classList.add("request-wrapper");
+  //   (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
+  //   newRequestDiv.innerHTML = `
+  //     <div class="list-rank">${requestPosition}</div>
+  //     <div>
+  //       <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+  //       <div class="instagram">${instagram}</div>
+  //     </div>
+  //   `
+  //   let button = document.createElement("button");
+  //   button.classList.add("toggle-button");
+  //   button.innerHTML = '➜';
+  //   button.onclick = function() {
+  //     toggleAlreadyPerformedStatus(systemName, id);
+  //     renderSiteData()
+  //   }
+  //   newRequestDiv.appendChild(button);
+  //   signUpDiv.appendChild(newRequestDiv)
+  // })
+
+  // previousPerformersList.forEach(request =>{
+  //   const name = request.name;
+  //   const systemName = name.toLowerCase();
+  //   const id = request.numericalTimestamp;
+  //   const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
+  //   const instagram = request.instagram;
+  //   const isMinor = request.isMinor;
+
+  //   let newRequestDiv = document.createElement("div");
     
-    newRequestDiv.setAttribute("id", id);
-    newRequestDiv.classList.add("request-wrapper");
-    (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
-    newRequestDiv.innerHTML = `
-      <div class="list-rank">${requestPosition}</div>
-      <div>
-        <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
-        <div class="instagram">${instagram}</div>
-      </div>
-    `
-    let button = document.createElement("button");
-    button.classList.add("toggle-button");
-    button.innerHTML = '➜';
-    button.onclick = function() {
-      toggleAlreadyPerformedStatus(systemName, id);
-      renderSiteData()
-    }
-    newRequestDiv.appendChild(button);
-    signUpDiv.appendChild(newRequestDiv)
-  })
-
-  previousPerformersList.forEach(request =>{
-    const name = request.name;
-    const systemName = name.toLowerCase();
-    const id = request.numericalTimestamp;
-    const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
-    const instagram = request.instagram;
-    const isMinor = request.isMinor;
-
-    let newRequestDiv = document.createElement("div");
-    
-    newRequestDiv.setAttribute("id", id);
-    newRequestDiv.classList.add("request-wrapper");
-    newRequestDiv.classList.add("alt");
-    (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
-    newRequestDiv.innerHTML = `
-      <div>
-        <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
-        <div class="instagram">${instagram}</div>
-      </div>
-    `
-    let button = document.createElement("button");
-    button.classList.add("toggle-button");
-    button.classList.add("alt")
-    button.innerHTML = '↺'
-    button.onclick = function() {
-      toggleAlreadyPerformedStatus(systemName, id);
-      renderSiteData()
-    }
-    newRequestDiv.appendChild(button);
-    prevDiv.appendChild(newRequestDiv)
-  })
+  //   newRequestDiv.setAttribute("id", id);
+  //   newRequestDiv.classList.add("request-wrapper");
+  //   newRequestDiv.classList.add("alt");
+  //   (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
+  //   newRequestDiv.innerHTML = `
+  //     <div>
+  //       <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+  //       <div class="instagram">${instagram}</div>
+  //     </div>
+  //   `
+  //   let button = document.createElement("button");
+  //   button.classList.add("toggle-button");
+  //   button.classList.add("alt")
+  //   button.innerHTML = '↺'
+  //   button.onclick = function() {
+  //     toggleAlreadyPerformedStatus(systemName, id);
+  //     renderSiteData()
+  //   }
+  //   newRequestDiv.appendChild(button);
+  //   prevDiv.appendChild(newRequestDiv)
+  // })
 }
 
 // ==================================================================================
