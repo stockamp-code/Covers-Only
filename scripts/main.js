@@ -15,11 +15,17 @@ function pullFromLocalStorage(){
   siteData = JSON.parse(oldData);
 };
 
+function updateLocalStorageAndPullFromIt (){
+  writeToLocalStorage(siteData);
+  pullFromLocalStorage()
+}
+
 function initializeLocalStorage(){
   const blankData = {
     'signupRequests' : {},
     'orderList' : [],
-    'previousPerformersList' : []
+    'previousPerformersList' : [],
+    'showSetup' : false,
   };
   writeToLocalStorage(blankData)
   pullFromLocalStorage();
@@ -40,43 +46,36 @@ function fetch_data(signup_csv) {
   };
 
   const renderData = function(gson) {
-    
     pullFromLocalStorage()
-
     let signupRequests = siteData.signupRequests;
-    
+
     for (let i=0; i<gson.length; i++) {
       const entry = gson[i];
       // console.log(entry)
-
-      const timestamp = entry.Timestamp;
-      const numericalTimestamp= Date.parse(timestamp)
-      const name = entry.Name;
+      const timestamp = entry.Timestamp || (new Date().toLocaleString());
+      const numericalTimestamp= Date.parse(timestamp);
+      const name = entry.Name || "Error - Missing Name"+numericalTimestamp;
       const systemName = name.toLowerCase();
-      const setup = entry.Setup.split(", "); 
-      let instagram = entry.Instagram;
+      const setup = entry.Setup.split(", ") || []; 
+      const isMinor = (entry.Age === "Yes") ? true : false;
+      let instagram = entry.Instagram || "";
       let requestEntries = {};
-      let duplicateStatus = false;
       let requestNumber = 1;
-      let isMinor = (entry.Age === "Yes") ? true : false;
+      let duplicateStatus = false;
 
       if (signupRequests[systemName]){
+        requestEntries = signupRequests[systemName].requestEntries;
+        requestNumber = Object.keys(requestEntries).length+1;
+
+        if (requestEntries[numericalTimestamp]){
+          duplicateStatus = true;
+        } 
         if (instagram === ""){
           instagram = signupRequests[systemName].instagram;
         };
-        requestEntries = signupRequests[systemName].requestEntries;
-        requestNumber = Object.keys(requestEntries).length+1;
-        
-        if (requestEntries[numericalTimestamp]){
-          duplicateStatus = true;
-        } else {
-        };
       };
 
-      if (duplicateStatus){
-        // console.log("Duplicate Status: " + duplicateStatus)
-      } else {
-
+      if (!duplicateStatus){
         let requestEntry = {
           'name' : name,
           'systemName' : systemName,
@@ -104,8 +103,7 @@ function fetch_data(signup_csv) {
 
     siteData.signupRequests = signupRequests;
     sortOrderList()
-    writeToLocalStorage(siteData);
-    pullFromLocalStorage();
+    updateLocalStorageAndPullFromIt()
     renderSiteData();
     // console.log(siteData);
   };
@@ -162,7 +160,7 @@ function renderSiteData(){
   signUpDiv.innerHTML = "";
   prevDiv.innerHTML = "";
 
-  function renderList(list, parentDiv, listType){
+  function renderList(list, parentDiv, listType, showSetupStatus){
     list.forEach(request =>{
       const name = request.name;
       const systemName = name.toLowerCase()
@@ -170,107 +168,66 @@ function renderSiteData(){
       const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
       const instagram = request.instagram;
       const isMinor = request.isMinor;
+      const setupList = request.setup;
       (listType === "on deck") ? requestPosition++ : requestPosition="";
 
       let newRequestDiv = document.createElement("div");
       newRequestDiv.setAttribute("id", id);
       newRequestDiv.classList.add("request-wrapper");
-      (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT");
-      (listType !== "on deck") ? newRequestDiv.classList.add("alt") : console.log("on deck");
+      if (isMinor){newRequestDiv.classList.add("minor-flag")}
+      if (listType !== "on deck"){newRequestDiv.classList.add("alt")};
       newRequestDiv.innerHTML = `
         <div class="list-rank">${requestPosition}</div>
         <div>
-          <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
+          <div class="artist-name">
+            ${name} <span class="request-number">${requestNumber}</span>
+          </div>
           <div class="instagram">${instagram}</div>
-        </div>
-      `
-        let button = document.createElement("button");
-        button.classList.add("toggle-button");
-        button.innerHTML = (listType === "on deck") ? '➜': '↺';
-        button.onclick = function() {
-          toggleAlreadyPerformedStatus(systemName, id);
-          renderSiteData()
-        }
-        newRequestDiv.appendChild(button);
-        parentDiv.appendChild(newRequestDiv)
+        </div>`
+
+      let setupDiv = document.createElement("ul");
+      setupDiv.classList.add("set-up-information");
+      if(showSetupStatus){setupDiv.classList.add("show")}
+      setupList.forEach(item =>{
+        let listItem = document.createElement("li")
+        listItem.innerHTML = item
+        setupDiv.appendChild(listItem)
+      })
+      
+      newRequestDiv.appendChild(setupDiv)
+      
+      let button = document.createElement("button");
+      button.classList.add("toggle-button");
+      button.innerHTML = (listType === "on deck") ? '➜': '↺';
+      button.onclick = () => {
+        toggleAlreadyPerformedStatus(systemName, id);
+        renderSiteData()
+      }
+
+      newRequestDiv.appendChild(button);
+      parentDiv.appendChild(newRequestDiv)
     })
   }
 
-  renderList(orderList, signUpDiv, "on deck")
-  renderList(previousPerformersList, prevDiv, "already performed")
-
-  // orderList.forEach(request =>{
-  //   const name = request.name;
-  //   const systemName = name.toLowerCase()
-  //   const id = request.numericalTimestamp;
-  //   const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
-  //   const instagram = request.instagram;
-  //   const isMinor = request.isMinor;
-  //   requestPosition++;
-
-  //   let newRequestDiv = document.createElement("div");
-  //   newRequestDiv.setAttribute("id", id);
-  //   newRequestDiv.classList.add("request-wrapper");
-  //   (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
-  //   newRequestDiv.innerHTML = `
-  //     <div class="list-rank">${requestPosition}</div>
-  //     <div>
-  //       <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
-  //       <div class="instagram">${instagram}</div>
-  //     </div>
-  //   `
-  //   let button = document.createElement("button");
-  //   button.classList.add("toggle-button");
-  //   button.innerHTML = '➜';
-  //   button.onclick = function() {
-  //     toggleAlreadyPerformedStatus(systemName, id);
-  //     renderSiteData()
-  //   }
-  //   newRequestDiv.appendChild(button);
-  //   signUpDiv.appendChild(newRequestDiv)
-  // })
-
-  // previousPerformersList.forEach(request =>{
-  //   const name = request.name;
-  //   const systemName = name.toLowerCase();
-  //   const id = request.numericalTimestamp;
-  //   const requestNumber = (request.requestNumber > 1) ? request.requestNumber : "";
-  //   const instagram = request.instagram;
-  //   const isMinor = request.isMinor;
-
-  //   let newRequestDiv = document.createElement("div");
-    
-  //   newRequestDiv.setAttribute("id", id);
-  //   newRequestDiv.classList.add("request-wrapper");
-  //   newRequestDiv.classList.add("alt");
-  //   (isMinor) ?  newRequestDiv.classList.add("minor-flag") : console.log("I'M AN ADULT")
-  //   newRequestDiv.innerHTML = `
-  //     <div>
-  //       <div class="artist-name">${name} <span class="request-number">${requestNumber}</span></div>
-  //       <div class="instagram">${instagram}</div>
-  //     </div>
-  //   `
-  //   let button = document.createElement("button");
-  //   button.classList.add("toggle-button");
-  //   button.classList.add("alt")
-  //   button.innerHTML = '↺'
-  //   button.onclick = function() {
-  //     toggleAlreadyPerformedStatus(systemName, id);
-  //     renderSiteData()
-  //   }
-  //   newRequestDiv.appendChild(button);
-  //   prevDiv.appendChild(newRequestDiv)
-  // })
+  renderList(previousPerformersList, prevDiv, "already performed", false)
+  renderList(orderList, signUpDiv, "on deck", siteData.showSetup)
 }
 
-// ==================================================================================
-
-if (!localStorage.siteData) {
-  initializeLocalStorage();
+function toggleSetupVisibility () {
+  console.log(siteData.showSetup)
+  siteData.showSetup = !siteData.showSetup
+  console.log(siteData.showSetup)
+  updateLocalStorageAndPullFromIt();
+  renderSiteData();
 }
 
+//==================================================================================
+
+(!localStorage.siteData) ? initializeLocalStorage() : pullFromLocalStorage();
 fetch_data(signup_csv)
-
 setInterval(function(){
-    fetch_data(signup_csv)
+  fetch_data(signup_csv)
 }, 60000)
+
+//=================================================================================
+
