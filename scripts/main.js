@@ -3,7 +3,7 @@ const performersOrderWrapperID = "order_content";
 const signUpDivID = "signup_list";
 const previousPerformersDivID = "previous_performers";
 const signUpFormID = "form_content";
-const utilityButtonsID = "utility-buttons";
+const utilityButtonsID = "utility_buttons";
 const iFrameFormID = "iframe_form";
 
 let siteData = {};
@@ -227,9 +227,9 @@ function toggleSetupVisibility () {
   renderSiteData();
 }
 
-function clickRender(buttonType){
-  renderToggleFormViewButton(buttonType)
-}
+// function clickRender(buttonType){
+//   renderToggleFormViewButton(buttonType)
+// }
 
 function refreshIframe() {
     var iframe = document.getElementById(iFrameFormID);
@@ -240,12 +240,12 @@ function renderToggleFormViewButton(buttonType) {
   let button = document.getElementById("form_and_list_toggle");
   
   if (buttonType === "toggle_to_list_view"){
-    button.innerHTML = '<i class="fa-regular fa-file-lines"></i>';
+    button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
     document.getElementById(performersOrderWrapperID).classList.add("hide")
     document.getElementById(signUpFormID).classList.remove("hide")
     refreshIframe()
   } else if (buttonType === "toggle_to_form_view"){
-    button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
+    button.innerHTML = '<i class="fa-solid fa-user-plus"></i>';
     document.getElementById(signUpFormID).classList.add("hide")
     document.getElementById(performersOrderWrapperID).classList.remove("hide")
   }
@@ -253,14 +253,14 @@ function renderToggleFormViewButton(buttonType) {
   button.onclick = () => {
     if (buttonType === "toggle_to_list_view") {
       console.log("list view")
-      button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
+      button.innerHTML = '<i class="fa-solid fa-user-plus"></i>';
       document.getElementById(performersOrderWrapperID).classList.add("hide")
       document.getElementById(signUpFormID).classList.remove("hide")
       refreshIframe()
       renderToggleFormViewButton("toggle_to_form_view")
     } else if (buttonType === "toggle_to_form_view") {
       console.log("form view")
-      button.innerHTML = '<i class="fa-regular fa-file-lines"></i>';
+      button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
       document.getElementById(signUpFormID).classList.add("hide")
       document.getElementById(performersOrderWrapperID).classList.remove("hide")
       renderToggleFormViewButton("toggle_to_list_view")
@@ -276,6 +276,7 @@ function startUpRoutine(){
   setInterval(function(){
     fetch_data(signup_csv)
   }, 60000)
+  console.log("boo")
 }
 
 //=================================================================================
