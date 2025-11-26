@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <title>Covers Only</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- <script src="https://kit.fontawesome.com/e0a0e3a5f4.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
     <script 
@@ -21,19 +20,23 @@
         <img class='banner-image'src="media/Banner-Title.png" alt="Bird on a Mic, the Covers Only Logo">
       </div>
     </div>
-    <div>
-      <div class="sign-up-heading">
-        <h2>Sign Up List</h2>
-        <div class="utilities">
-          <button type="button" onClick="toggleSetupVisibility()"><i class="fa-solid fa-eye"></i></button>
-          <button type="button" onClick="fetch_data(signup_csv)"><i class="fa-solid fa-rotate-right"></i></button>
-          <button type="button" onClick="initializeLocalStorage()"><i class="fa-regular fa-trash-can"></i></button>
-        </div>
+    <div class="sign-up-heading">
+      <h2>Signups</h2>
+      <div class="utilities" id="utility-buttons">
+        <button id="form_and_list_toggle" type="button" onClick="renderToggleFormViewButton('toggle_to_list_view')"><i class="fa-solid fa-list-ul"></i></button>
+        <button type="button" onClick="toggleSetupVisibility()"><i class="fa-solid fa-eye"></i></button>
+        <button type="button" onClick="fetch_data(signup_csv)"><i class="fa-solid fa-rotate-right"></i></button>
+        <button type="button" onClick="initializeLocalStorage()"><i class="fa-regular fa-trash-can"></i></button>
       </div>
-      <!-- <h2>Previous Performers</h2> -->
-      <div id="previous_performers"></div>
-      <div id="signup_list"></div>
     </div>
-    <script src="scripts/frontEnd.js"></script>
-  </body>
+    <div id="main_content">
+      <div id="order_content">
+        <div id="previous_performers"></div>
+        <div id="signup_list"></div>
+      </div>
+      <div id="form_content" class="hide">
+        <iframe id="iframe_form" src="https://docs.google.com/forms/d/e/1FAIpQLSeprb41FY67To2rL3yuzzlZ9uqd14gXSqVG94_nAccxSktRQQ/viewform?embedded=true" width="100%" height="1500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>  </body>
+      </div>
+    </div>
+    <!-- <script src="scripts/frontEnd.js"></script> -->
 </html> 

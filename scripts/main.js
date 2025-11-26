@@ -1,7 +1,13 @@
 let signup_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
-let siteData = {}
+const performersOrderWrapperID = "order_content";
 const signUpDivID = "signup_list";
-const previousPerformersDivID = "previous_performers"
+const previousPerformersDivID = "previous_performers";
+const signUpFormID = "form_content";
+const utilityButtonsID = "utility-buttons";
+const iFrameFormID = "iframe_form";
+
+let siteData = {};
+startUpRoutine();
 
 // ===============================================================================
 
@@ -191,21 +197,21 @@ function renderSiteData(){
       setupList.forEach(item =>{
         let listItem = document.createElement("li")
         listItem.innerHTML = item
-        setupDiv.appendChild(listItem)
+        setupDiv.append(listItem)
       })
       
-      newRequestDiv.appendChild(setupDiv)
+      newRequestDiv.append(setupDiv)
       
       let button = document.createElement("button");
       button.classList.add("toggle-button");
-      button.innerHTML = (listType === "on deck") ? '➜': '↺';
+      button.innerHTML = (listType === "on deck") ? '<i class="fa-solid fa-turn-up"></i>': '<i class="fa-solid fa-turn-down"></i>';
       button.onclick = () => {
         toggleAlreadyPerformedStatus(systemName, id);
         renderSiteData()
       }
 
-      newRequestDiv.appendChild(button);
-      parentDiv.appendChild(newRequestDiv)
+      newRequestDiv.append(button);
+      parentDiv.append(newRequestDiv)
     })
   }
 
@@ -221,13 +227,55 @@ function toggleSetupVisibility () {
   renderSiteData();
 }
 
+function clickRender(buttonType){
+  renderToggleFormViewButton(buttonType)
+}
+
+function refreshIframe() {
+    var iframe = document.getElementById(iFrameFormID);
+    iframe.src = iframe.src;
+}
+
+function renderToggleFormViewButton(buttonType) {
+  let button = document.getElementById("form_and_list_toggle");
+  
+  if (buttonType === "toggle_to_list_view"){
+    button.innerHTML = '<i class="fa-regular fa-file-lines"></i>';
+    document.getElementById(performersOrderWrapperID).classList.add("hide")
+    document.getElementById(signUpFormID).classList.remove("hide")
+    refreshIframe()
+  } else if (buttonType === "toggle_to_form_view"){
+    button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
+    document.getElementById(signUpFormID).classList.add("hide")
+    document.getElementById(performersOrderWrapperID).classList.remove("hide")
+  }
+  
+  button.onclick = () => {
+    if (buttonType === "toggle_to_list_view") {
+      console.log("list view")
+      button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
+      document.getElementById(performersOrderWrapperID).classList.add("hide")
+      document.getElementById(signUpFormID).classList.remove("hide")
+      refreshIframe()
+      renderToggleFormViewButton("toggle_to_form_view")
+    } else if (buttonType === "toggle_to_form_view") {
+      console.log("form view")
+      button.innerHTML = '<i class="fa-regular fa-file-lines"></i>';
+      document.getElementById(signUpFormID).classList.add("hide")
+      document.getElementById(performersOrderWrapperID).classList.remove("hide")
+      renderToggleFormViewButton("toggle_to_list_view")
+    }
+  }
+}
+
 //==================================================================================
 
-(!localStorage.siteData) ? initializeLocalStorage() : pullFromLocalStorage();
-fetch_data(signup_csv)
-setInterval(function(){
+function startUpRoutine(){
+  (!localStorage.siteData) ? initializeLocalStorage() : pullFromLocalStorage();
   fetch_data(signup_csv)
-}, 60000)
+  setInterval(function(){
+    fetch_data(signup_csv)
+  }, 60000)
+}
 
 //=================================================================================
-
