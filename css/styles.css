@@ -6,10 +6,10 @@ html {
 body {
     color: rgb(40, 40, 40);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 1.5em;
+    padding: 20px;
     font-size: clamp(1.25rem, 1.0648rem + 0.7407vw, 1.5rem);
     margin: 0px;
-    padding-bottom: 4em;
+    padding-bottom: 40px;
 }
 
 button:hover {
@@ -22,7 +22,7 @@ button:disabled:hover {
 .heading {
     display: flex;
     justify-content: center;
-    gap: 1em;
+    gap: 10px;
     align-items: center;
     background-color: white;
 }
@@ -49,9 +49,9 @@ button:disabled:hover {
     gap: 1em;
     justify-content: space-between;
     align-items: center;
-    padding: .5em;
-    margin-left: -1.5em;
-    margin-right:-1.5em;
+    padding: 10px 20px 10px 20px;
+    margin-left: -20px;
+    margin-right:-20px;
     background-color: rgb(5, 63, 104);
     color: white;
 }
@@ -60,19 +60,19 @@ button:disabled:hover {
     display: flex;
     justify-content: right;
     align-items: center;
-    gap: 1em;
-    padding: .5em;
+    gap: 10px;
+    padding: 5px;
 }
 
 .utilities > button {
    background-color:rgb(5, 63, 104);
    color: white;
    border: solid, white, 2px;
-   min-width: 2em;
+   min-width: 20px;
    font-weight: 800;
    border-radius: 10px;
-   padding: 1em;
-   font-size: 1em;
+   padding: 20px;
+   font-size: 1.5rem;
 }
 .utilities > button:hover {
    background-color:  rgb(140, 187, 245);
@@ -88,15 +88,15 @@ button:disabled:hover {
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: left;
-    gap: 1em;
-    margin: .5em;
-    margin-left: 2em;
+    gap: 10px;
+    margin: 20px;
+    margin-left: 80px;
     padding: .8em; 
     background-color: rgb(181, 217, 248);
     color: rgb(5, 63, 104);
     position: relative;
     border-radius: 10px;
-    min-height: 3em;
+    min-height: 70px;
 }
 
 .request-wrapper.minor-flag {
@@ -109,44 +109,44 @@ button:disabled:hover {
 
 .list-rank {
     position: absolute;
-    left: -1.8em;
-    top: 1em;
-    font-size: 1.5em;
+    left: -60px;
+    top: 30px;
+    font-size: 2rem;
     color: rgb(86, 86, 86);
     font-weight: 800;
 }
 
 .artist-name {
-    /* min-height: 1em; */
+    font-size: 1.5rem;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: .3em;
+    gap: 5px;
 }
 
 .request-number {
     color: rgb(148, 91, 0);
-    font-size: .8em;
+    font-size: 1rem;
     display: inline-block;
 }
 
 .instagram {
     /* min-height: 1em; */
     color: rgb(82, 82, 82);
-    font-size: .9em;
+    font-size: 1.3rem;
 }
 
 .toggle-button {
     position:absolute;
-    right: .5em;
+    right: 15px;
     background-color: rgb(51, 126, 179);;
     color: white;
     border: none;
-    min-width: 2em;
+    min-width: 40px;
     font-weight: 900;
     border-radius: 10px;
-    padding: .25em;
-    font-size: 1.5em;
+    padding: 20px;
+    font-size: 1.5rem;
 }
 
 .toggle-button.alt {
@@ -158,7 +158,7 @@ button:disabled:hover {
 }
 
 .set-up-information{
-    font-size: .8em;
+    font-size: 1.2rem;
     overflow: hidden;
     display: none;
 }
@@ -172,5 +172,5 @@ button:disabled:hover {
 }
 
 #form_content {
-    padding-top: 1em;
+    padding-top: 20px;
 }
