@@ -204,7 +204,7 @@ function renderSiteData(){
       
       let button = document.createElement("button");
       button.classList.add("toggle-button");
-      button.innerHTML = (listType === "on deck") ? '<i class="fa-solid fa-turn-up"></i>': '<i class="fa-solid fa-turn-down"></i>';
+      button.innerHTML = (listType === "on deck") ? '<i class="fa-solid fa-right-long"></i>': '<i class="fa-solid fa-turn-down"></i>';
       button.onclick = () => {
         toggleAlreadyPerformedStatus(systemName, id);
         renderSiteData()
@@ -227,10 +227,6 @@ function toggleSetupVisibility () {
   renderSiteData();
 }
 
-// function clickRender(buttonType){
-//   renderToggleFormViewButton(buttonType)
-// }
-
 function refreshIframe() {
     var iframe = document.getElementById(iFrameFormID);
     iframe.src = iframe.src;
@@ -238,32 +234,33 @@ function refreshIframe() {
 
 function renderToggleFormViewButton(buttonType) {
   let button = document.getElementById("form_and_list_toggle");
+  let siblingButtons = Array.from(document.getElementById(utilityButtonsID).children).filter(siblingButton => siblingButton.id !== button.id)
   
+  siblingButtons.forEach(siblingButton =>{
+    siblingButton.disabled = !siblingButton.disabled
+    // console.log(siblingButton.classList)
+    // (siblingButton.disabled) ? siblingButton.classList.add("disabledButton") : siblingButton.classList.remove("disabledButton")
+  })
+
+  function buttonScript(innerHTML, hideElementID,showElementID, refreshIframeStatus, renderScriptStatus, renderScriptMessage){
+    button.innerHTML = innerHTML;
+    document.getElementById(hideElementID).classList.add("hide");
+    document.getElementById(showElementID).classList.remove("hide");
+    if (refreshIframeStatus) {refreshIframe()}
+    if (renderScriptStatus){renderToggleFormViewButton(renderScriptMessage)}
+  }
+
   if (buttonType === "toggle_to_list_view"){
-    button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
-    document.getElementById(performersOrderWrapperID).classList.add("hide")
-    document.getElementById(signUpFormID).classList.remove("hide")
-    refreshIframe()
+    buttonScript('<i class="fa-solid fa-list-ul"></i>',performersOrderWrapperID,signUpFormID,true,false)
   } else if (buttonType === "toggle_to_form_view"){
-    button.innerHTML = '<i class="fa-solid fa-user-plus"></i>';
-    document.getElementById(signUpFormID).classList.add("hide")
-    document.getElementById(performersOrderWrapperID).classList.remove("hide")
+    buttonScript('<i class="fa-solid fa-user-plus"></i>',signUpFormID,performersOrderWrapperID,false,false)
   }
   
   button.onclick = () => {
     if (buttonType === "toggle_to_list_view") {
-      console.log("list view")
-      button.innerHTML = '<i class="fa-solid fa-user-plus"></i>';
-      document.getElementById(performersOrderWrapperID).classList.add("hide")
-      document.getElementById(signUpFormID).classList.remove("hide")
-      refreshIframe()
-      renderToggleFormViewButton("toggle_to_form_view")
+      buttonScript('<i class="fa-solid fa-list-ul"></i>',performersOrderWrapperID,signUpFormID,true,true,"toggle_to_form_view")
     } else if (buttonType === "toggle_to_form_view") {
-      console.log("form view")
-      button.innerHTML = '<i class="fa-solid fa-list-ul"></i>';
-      document.getElementById(signUpFormID).classList.add("hide")
-      document.getElementById(performersOrderWrapperID).classList.remove("hide")
-      renderToggleFormViewButton("toggle_to_list_view")
+      buttonScript('<i class="fa-solid fa-user-plus"></i>',signUpFormID,performersOrderWrapperID,false,true,"toggle_to_list_view")
     }
   }
 }
@@ -276,7 +273,6 @@ function startUpRoutine(){
   setInterval(function(){
     fetch_data(signup_csv)
   }, 60000)
-  console.log("boo")
 }
 
 //=================================================================================

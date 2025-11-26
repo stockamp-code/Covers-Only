@@ -12,6 +12,13 @@ body {
     padding-bottom: 4em;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
+button:disabled:hover {
+    cursor:default;
+}
 .heading {
     display: flex;
     justify-content: center;
@@ -70,6 +77,10 @@ body {
 .utilities > button:hover {
    background-color:  rgb(140, 187, 245);
 } 
+
+.utilities > button:disabled {
+    background-color: rgb(189, 189, 189);
+}
 
 .request-wrapper {
     display: flex;
