@@ -1,4 +1,7 @@
+// This is the url the google spreadsheet table lives on
 let signup_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
+
+// These constants all reflect Div IDs in the html sections
 const performersOrderWrapperID = "order_content";
 const upcomingPerformersDivID = "upcoming_performers";
 const previousPerformersDivID = "previous_performers";
@@ -6,10 +9,12 @@ const signUpFormID = "form_content";
 const utilityButtonsID = "utility_buttons";
 const iFrameFormID = "iframe_form";
 
+// This initializes the site data. If nothing exists in browser storage, it will create a blank object to write to; otherwise it will pull data from the browser storage to fill the site data variable object
 let siteData = {};
 startUpRoutine();
 
-// ===============================================================================
+
+// these three functions write to and pull from local browser storage
 
 function writeToLocalStorage(data){
   const newData = JSON.stringify(data);
@@ -24,7 +29,7 @@ function pullFromLocalStorage(){
 function updateLocalStorageAndPullFromIt (){
   writeToLocalStorage(siteData);
   pullFromLocalStorage()
-  console.log(siteData)
+  // console.log(siteData)
 }
 
 function initializeLocalStorage(){
