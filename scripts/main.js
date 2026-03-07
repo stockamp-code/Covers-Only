@@ -1,6 +1,6 @@
 let signup_csv = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRriKSnmOyDMzu0qAznH52vJfkSDH1kQuIilXU8bm2oFLYPbDusjHajHXPAjBh7-ff4x6EopMC1MXlM/pub?gid=552228275&single=true&output=csv';
 const performersOrderWrapperID = "order_content";
-const signUpDivID = "signup_list";
+const upcomingPerformersDivID = "upcoming_performers";
 const previousPerformersDivID = "previous_performers";
 const signUpFormID = "form_content";
 const utilityButtonsID = "utility_buttons";
@@ -24,6 +24,7 @@ function pullFromLocalStorage(){
 function updateLocalStorageAndPullFromIt (){
   writeToLocalStorage(siteData);
   pullFromLocalStorage()
+  console.log(siteData)
 }
 
 function initializeLocalStorage(){
@@ -42,6 +43,7 @@ function initializeLocalStorage(){
 // =========================================================================
 
 function fetch_data(signup_csv) {
+  console.log("fetching data")
   fetch(signup_csv)
   .then(function(response){return response.text();})
   .then(function(data){parseData(data)});
@@ -61,7 +63,7 @@ function fetch_data(signup_csv) {
       const timestamp = entry.Timestamp || (new Date().toLocaleString());
       const numericalTimestamp= Date.parse(timestamp);
       const name = entry.Name || "Error - Missing Name"+numericalTimestamp;
-      const systemName = name.toLowerCase();
+      const systemName = name.toLowerCase().trim();
       const setup = entry.Setup.split(", ") || []; 
       const isMinor = (entry.Age === "Yes") ? true : false;
       let instagram = entry.Instagram || "";
@@ -159,7 +161,7 @@ function toggleAlreadyPerformedStatus(personID, requestID){
 function renderSiteData(){
   const orderList = siteData.orderList;
   const previousPerformersList = siteData.previousPerformersList;
-  const signUpDiv = document.getElementById(signUpDivID);
+  const signUpDiv = document.getElementById(upcomingPerformersDivID);
   const prevDiv = document.getElementById(previousPerformersDivID);
   let requestPosition = 0;
 

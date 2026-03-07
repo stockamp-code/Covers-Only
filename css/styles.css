@@ -13,6 +13,14 @@ body {
     min-height: 80vh;
 }
 
+button {
+    aspect-ratio: 1/1;
+    font-size: 3rem;
+    padding: 1rem;
+    border-radius:1rem; 
+    font-weight: 800;
+}
+
 button:hover {
     cursor: pointer;
 }
@@ -70,13 +78,7 @@ button:disabled:hover {
     /* padding: 5px; */
 }
 
-button {
-    aspect-ratio: 1/1;
-    font-size: 3rem;
-    padding: 1rem;
-    border-radius:1rem; 
-    font-weight: 800;
-}
+
 
 .utilities > button {
    background-color:rgb(5, 63, 104);
