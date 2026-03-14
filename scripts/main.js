@@ -29,8 +29,9 @@ function pullFromLocalStorage(){
 function updateLocalStorageAndPullFromIt (){
   writeToLocalStorage(siteData);
   pullFromLocalStorage()
-  // console.log(siteData)
 }
+
+// This function houses the initial data structure of the site data and commits it to local storage. Then it renders that data on the site
 
 function initializeLocalStorage(){
   const blankData = {
@@ -46,6 +47,9 @@ function initializeLocalStorage(){
 }
 
 // =========================================================================
+// =========================================================================
+
+// this function begins fetching the data from the external spreadsheet and adds it to local storage 
 
 function fetch_data(signup_csv) {
   console.log("fetching data")
@@ -55,6 +59,7 @@ function fetch_data(signup_csv) {
 
   const parseData = function(data){
     let gson = Papa.parse(data, {header:true}).data;
+    console.log(gson)
     renderData(gson);
   };
 
@@ -62,9 +67,9 @@ function fetch_data(signup_csv) {
     pullFromLocalStorage()
     let signupRequests = siteData.signupRequests;
 
+    //
     for (let i=0; i<gson.length; i++) {
       const entry = gson[i];
-      // console.log(entry)
       const timestamp = entry.Timestamp || (new Date().toLocaleString());
       const numericalTimestamp= Date.parse(timestamp);
       const name = entry.Name || "Error - Missing Name"+numericalTimestamp;
@@ -118,7 +123,6 @@ function fetch_data(signup_csv) {
     sortOrderList()
     updateLocalStorageAndPullFromIt()
     renderSiteData();
-    // console.log(siteData);
   };
 };
 
