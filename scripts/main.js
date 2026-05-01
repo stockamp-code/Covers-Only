@@ -71,7 +71,7 @@ function fetch_data(signup_csv) {
     for (let i=0; i<gson.length; i++) {
       const entry = gson[i];
       const timestamp = entry.Timestamp || (new Date().toLocaleString());
-      const numericalTimestamp= Date.parse(timestamp);
+      const numericalTimestamp = Date.parse(timestamp);
       const name = entry.Name || "Error - Missing Name"+numericalTimestamp;
       const systemName = name.toLowerCase().trim();
       const setup = entry.Setup.split(", ") || []; 
@@ -96,7 +96,7 @@ function fetch_data(signup_csv) {
       if (!duplicateStatus){
         let requestEntry = {
           'name' : name,
-          'systemName' : systemName,
+          'systemNameSub' : systemName,
           'setup' : setup,
           'instagram' : instagram,
           'timestamp' : timestamp,
@@ -155,9 +155,11 @@ function sortOrderList() {
 };
 
 function toggleAlreadyPerformedStatus(personID, requestID){
+  // console.log(personID + " " + requestID)
+  // console.log(siteData.signupRequests[personID])
   if(siteData.signupRequests[personID]){
     let thisRequest = siteData.signupRequests[personID].requestEntries[requestID].alreadyPerformed;
-    siteData.signupRequests[personID].requestEntries[requestID].alreadyPerformed = !thisRequest;   
+    siteData.signupRequests[personID].requestEntries[requestID].alreadyPerformed = !thisRequest; 
   }
   sortOrderList()
   writeToLocalStorage(siteData)
@@ -180,7 +182,7 @@ function renderSiteData(){
   function renderList(list, parentDiv, listType, showSetupStatus){
     list.forEach(request =>{
       const name = request.name;
-      const systemName = name.toLowerCase()
+      const systemName = request.systemNameSub;
       const id = request.numericalTimestamp;
       const requestNumber = (request.requestNumber > 1) ? "#"+request.requestNumber : "";
       const instagram = request.instagram;
